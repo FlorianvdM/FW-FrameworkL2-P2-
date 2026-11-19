@@ -1,6 +1,7 @@
+# Testbestand: klik in VS Code op "Send Request" boven een regel
 @RPG_API_HostAddress = http://localhost:5194
 
-GET {{RPG_API_HostAddress}}/weatherforecast/
+GET {{RPG_API_HostAddress}}/api/game/status
 Accept: application/json
 
 ###

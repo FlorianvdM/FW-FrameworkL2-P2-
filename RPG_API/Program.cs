@@ -1,43 +1,35 @@
-var builder = WebApplication.CreateBuilder(args);
+namespace Game.Features;
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+public static class Program
 {
-    app.MapOpenApi();
-}
+    // Startpunt van de API
+    public static void Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
 
-app.UseHttpsRedirection();
+        // Eerst alle onderdelen (services) registreren
+        ConfigureServices(builder);
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+        var app = builder.Build();
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+        // Daarna de request-pipeline instellen
+        Configure(app);
 
-app.MapGet("/api/status", () => new { message = "API werkt" });
+        // API gaat luisteren naar requests
+        app.Run();
+    }
 
-app.Run();
+    // Hier stel je in wat er met een binnenkomend request gebeurt
+    private static void Configure(WebApplication app)
+    {
+        // Koppelt de routes uit de controllers (bijv. /api/game/status)
+        app.MapControllers();
+    }
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    // Hier registreer je onderdelen die de API nodig heeft
+    private static void ConfigureServices(WebApplicationBuilder builder)
+    {
+        // Zorgt dat controllers werken
+        builder.Services.AddControllers();
+    }
 }
