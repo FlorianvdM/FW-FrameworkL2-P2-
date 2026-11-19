@@ -1,3 +1,5 @@
+using Game.Api.Services;
+
 namespace Game.Features;
 
 public static class Program
@@ -31,5 +33,8 @@ public static class Program
     {
         // Zorgt dat controllers werken
         builder.Services.AddControllers();
+
+        // GameService registreren: per HTTP-request wordt er één nieuwe gemaakt
+        builder.Services.AddScoped<GameService>();
     }
 }

@@ -5,3 +5,8 @@ GET {{RPG_API_HostAddress}}/api/game/status
 Accept: application/json
 
 ###
+
+GET {{RPG_API_HostAddress}}/api/game/info
+Accept: application/json
+
+###
